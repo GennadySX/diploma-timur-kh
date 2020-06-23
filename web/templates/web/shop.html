@@ -36,28 +36,32 @@
     {% for post in pr %}
       {% if post.availability %}
        {% if post.group == "mobile" %}
-          <div class=" Portfolio-box branding"> <!-- Смартфоны -->
+          <div class=" Portfolio-box branding" style="height: auto"> <!-- Смартфоны -->
             <a href="img/Portfolio-pic3.jpg"><img src="{{ post.img.url }}" alt=""></a>
             <h3>{{ post.name }}</h3>
             <p>Цена: {{ post.price }} ₽</p>
+             <button class="btn btn-success">Купить</button>
           </div>
        {% elif post.group == "pc" %}
-        <div class=" Portfolio-box printdesign"> <!-- Компьютеры -->
+        <div class=" Portfolio-box printdesign" style="height: auto"> <!-- Компьютеры -->
           <a href="img/Portfolio-pic1.jpg"><img src="{{ post.img.url }}" alt=""></a>
           <h3>{{ post.name }}</h3>
           <p>Цена: {{ post.price }} ₽</p>
+           <button class="btn btn-success">Купить</button>
         </div>
        {% elif post.group == "notebook" %}
-          <div class="Portfolio-box webdesign"> <!-- Ноутбуки -->
+          <div class="Portfolio-box webdesign" style="height: auto"> <!-- Ноутбуки -->
             <a href="img/Portfolio-pic2.jpg"><img src="{{ post.img.url }}" alt=""></a>
             <h3>{{ post.name }}</h3>
             <p>Цена: {{ post.price }} ₽</p>
+             <button class="btn btn-success">Купить</button>
           </div>
        {% else %}
-          <div class=" Portfolio-box photography"> <!-- Аксессуары -->
+          <div class=" Portfolio-box photography" style="height: auto"> <!-- Аксессуары -->
             <a href="img/Portfolio-pic4.jpg"><img src="{{ post.img.url }}" alt=""></a>
             <h3>{{ post.name }}</h3>
             <p>Цена: {{ post.price }} ₽</p>
+            <button class="btn btn-success">Купить</button>
           </div>
         {% endif %}
       {% endif %}

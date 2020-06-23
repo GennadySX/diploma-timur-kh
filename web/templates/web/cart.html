@@ -1,0 +1,154 @@
+{% extends 'web/main.html' %}
+{% load static %}
+{% block title_page %}
+    <title>Магазин</title>
+
+{% endblock title_page %}
+{% block content %}
+    {% if user.is_authenticated %}
+        <div style="position: absolute; right: 50%; transform: translateX(50%); margin-top: 30px;">
+            <a href="window.location.href = {% url 'reg' %}" type="submit" class="btn btn-light">Профиль</a>
+            <a onclick="window.location.href = {% url 'exit' %}" type="submit" class="btn btn-light">Выход</a>
+        </div>
+    {% else %}
+        <div style="position: absolute; right: 50%; transform: translateX(50%); margin-top: 30px;">
+            <a href="window.location.href = {% url 'reg' %}" type="submit" class="btn btn-light">Регистрация</a>
+            <a href="window.location.href = {% url 'login' %}" type="submit" class="btn btn-light">Вход</a>
+        </div>
+    {% endif %}
+    <section class="main-section paddind" id="Portfolio" style="
+  background: #eecda3;
+  background: -webkit-linear-gradient(to right, #eecda3, #62efa1);
+  background: linear-gradient(to right, #eecda3, #60d092);
+  min-height: 100vh;
+
+">
+        <div class="px-4 px-lg-0">
+            <!-- For demo purpose -->
+            <div class="container text-white text-center">
+                <h1 class="display-4">Корзина</h1>
+                </p>
+            </div>
+            <!-- End -->
+
+            <div class="pb-5">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12 p-5 bg-white rounded shadow-sm mb-5">
+
+                            <!-- Shopping cart table -->
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col" class="border-0 bg-light">
+                                            <div class="p-2 px-3 text-uppercase">Товар</div>
+                                        </th>
+                                        <th scope="col" class="border-0 bg-light">
+                                            <div class="py-2 text-uppercase">Цена</div>
+                                        </th>
+
+                                        <th scope="col" class="border-0 bg-light">
+                                            <div class="py-2 text-uppercase">Удалить</div>
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for post in pr %}
+                                        {% if post.availability %}
+                                            <tr>
+                                                <th scope="row" class="border-0">
+                                                    <div class="p-2">
+                                                        <img src="{{ post.img.url }}"
+                                                             alt="" width="70" class="img-fluid rounded shadow-sm">
+                                                        <div class="ml-3 d-inline-block align-middle">
+                                                            <h5 class="mb-0"><a href="#"
+                                                                                class="text-dark d-inline-block align-middle">{{ post.name }}</a>
+                                                            </h5><span
+                                                                class="text-muted font-weight-normal font-italic d-block">Категория: {{ post.group }}</span>
+                                                        </div>
+                                                    </div>
+                                                </th>
+                                                <td class="border-0 align-middle"><strong>{{ post.price }} ₽</strong></td>
+                                                <td class="border-0 align-middle"><a href="#" class="text-dark"><i
+                                                        class="fa fa-trash"></i></a></td>
+                                            </tr>
+                                        {% endif %}
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- End -->
+                        </div>
+                    </div>
+
+                    <div class="row py-5 p-4 bg-white rounded shadow-sm">
+                        <div class="col-lg-6">
+                            <div class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold">Данные
+                                заказчика
+                            </div>
+                            <div class="p-4">
+                                <form>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" id="exampleInputEmail1"
+                                               aria-describedby="emailHelp" placeholder="Введите ФИО">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" id="exampleInputPassword1"
+                                               placeholder="Ваш номер">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" id="exampleInputPassword1"
+                                               placeholder="Ваш адресс">
+                                    </div>
+                                    <div class="form-group">
+                                        <select type="text" class="form-control" id="exampleInputPassword1"
+                                                placeholder="Ваш адресс">
+                                            <option value="0" disabled selected>Выберите способ оплаты</option>
+                                            <option value="cash">Налиными</option>
+                                            <option value="card">Онлайн картой</option>
+                                        </select>
+                                    </div>
+
+                                </form>
+                            </div>
+                            <div class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold">Инструкция для
+                                продавца
+                            </div>
+                            <div class="p-4">
+                                <p class="font-italic mb-4">Если у вас есть информация для продавца, вы можете оставить
+                                    их в поле ниже</p>
+                                <textarea name="" cols="30" rows="2" class="form-control"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold">Итог заказа
+                            </div>
+                            <div class="p-4">
+                                <p class="font-italic mb-4">Доставка и дополнительные расходы рассчитываются на основе
+                                    значений, которые вы ввели.</p>
+                                <ul class="list-unstyled mb-4">
+                                    <li class="d-flex justify-content-between py-3 border-bottom"><strong
+                                            class="text-muted">Сумма товаров </strong><strong>₽3900.00</strong></li>
+                                    <li class="d-flex justify-content-between py-3 border-bottom"><strong
+                                            class="text-muted">Доставка</strong><strong>₽250.00</strong></li>
+                                    <li class="d-flex justify-content-between py-3 border-bottom"><strong
+                                            class="text-muted">НДС</strong><strong>₽100.00</strong></li>
+                                    <li class="d-flex justify-content-between py-3 border-bottom"><strong
+                                            class="text-muted">Общая сумма</strong>
+                                        <h5 class="font-weight-bold">₽4350.00</h5>
+                                    </li>
+                                </ul>
+                                <a href="#" class="btn btn-dark rounded-pill py-2 btn-block">Оформить заказ</a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+{% endblock content %}
+

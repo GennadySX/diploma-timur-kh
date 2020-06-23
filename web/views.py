@@ -10,3 +10,10 @@ def shop(request):
         'pr': product
     }
     return render(request, 'web/shop.html', context)
+
+def cart(request):
+    product = Product.objects.all()[:2]
+    context = {
+        'pr': product
+    }
+    return render(request, 'web/cart.html', context)
