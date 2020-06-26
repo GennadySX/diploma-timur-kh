@@ -34,10 +34,12 @@
     <!--main-nav-start-->
     <div class="container">
       <ul class="main-nav">
+        <li><a href="{% url 'reg' %}">Регистрация</a></li>
+        <li><a href="{% url 'login' %}">Вход</a></li>
         <li><a href="{% url 'home' %}">Главная</a></li>
-        <li class="small-logo"><a href="#header"><img src="{% static 'img/small-logo.png' %}" alt=""></a></li>
         <li><a href="{% url 'shop' %}">Магазин</a></li>
-           <li><a href="{% url 'cart' %}">Корзина</a></li>
+        <li><a href="{% url 'cart' %}">Корзина</a></li>
+        <li><a href="{% url 'comments' %}">Отзывы</a></li>
       </ul>
       <a class="res-nav_click" href="#"><i class="fa fa-bars"></i></a>
     </div>

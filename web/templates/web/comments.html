@@ -1,0 +1,62 @@
+{% extends 'main.html' %}
+
+    
+
+    {% block content %}
+
+    <h1 class="mt-4">Заявка: {{get_article.name}}</h1>
+
+    <p><a href="/">Вернуться назад</a></p>
+
+
+
+
+
+    <p>Дата создания:  {{get_article.create_date}}</p>
+
+    <p>Название:  {{get_article.name}}</p>
+
+    <p>Текст: {{get_article.text}}</p>
+    <br>
+    
+    
+    
+    
+    
+    <p>Комментарии ({{get_article.comments_articles.all.count}})</p>
+    
+    
+    <hr>
+    
+    
+    
+    
+     {% if messages %}
+    <div class="mt-4">
+        <div class="alert alert-success">
+            {% for m in messages %}
+                {{m}}
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+    
+    <ul>
+    {% for item in get_article.comments_articles.all %}
+        <li>
+        {{item.text}}<br>
+        Дата создания: {{item.create_date}} <br>
+        Оставил: {{item.author}} <br><br>
+        
+        </li>
+    {% endfor %}
+    </ul>
+    
+    
+    
+    
+    
+
+
+{% endblock %}
+

@@ -1,71 +1,113 @@
 {% extends 'web/main.html' %}
 {% load static %}
 {% block title_page %}
-  <title>Магазин</title>
+    <title>Магазин</title>
 {% endblock title_page %}
 {% block content %}
-  {% if user.is_authenticated %}
-    <div style="position: absolute; right: 50%; transform: translateX(50%); margin-top: 30px;">
-      <button onclick="window.location.href = {% url 'reg' %}" type="submit" class="btn btn-outline-info">Профиль</button>
-      <button onclick="window.location.href = {% url 'exit' %}" type="submit" class="btn btn-outline-info">Выход</button>
-    </div>
-  {% else %}
-    <div style="position: absolute; right: 50%; transform: translateX(50%); margin-top: 30px;">
-      <button onclick="window.location.href = {% url 'reg' %}" type="submit" class="btn btn-outline-info">Регистрация</button>
-      <button onclick="window.location.href = {% url 'login' %}" type="submit" class="btn btn-outline-info">Вход</button>
-    </div>
-  {% endif %}
-<section class="main-section paddind" id="Portfolio">
-  <!--main-section-start-->
-    <!-- <a class="btn btn-outline-secondary" style="position: absolute; float: right; margin: 0;">Регистрация</a> -->
-    <!-- <a class="btn btn-outline-secondary" style="position: absolute; float: right; margin: 0;">Вход</a> -->
-    <h2>Магазин</h2>
-    <h6>У нас большой асортимент товаров.</h6>
-    <div class="portfolioFilter">
-      <ul class="Portfolio-nav wow fadeIn delay-02s">
-        <li><a href="#" data-filter="*" class="current">Все</a></li>
-        <li><a href="#" data-filter=".branding">Смартфоны</a></li>
-        <li><a href="#" data-filter=".webdesign">Ноутбуки</a></li>
-        <li><a href="#" data-filter=".printdesign">Компьютеры</a></li>
-        <li><a href="#" data-filter=".photography">Аксессуары</a></li>
-      </ul>
-    </div>
-
-  </div>
-  <div class="portfolioContainer wow fadeInUp delay-04s">
-    {% for post in pr %}
-      {% if post.availability %}
-       {% if post.group == "mobile" %}
-          <div class=" Portfolio-box branding" style="height: auto"> <!-- Смартфоны -->
-            <a href="img/Portfolio-pic3.jpg"><img src="{{ post.img.url }}" alt=""></a>
-            <h3>{{ post.name }}</h3>
-            <p>Цена: {{ post.price }} ₽</p>
-             <button class="btn btn-success">Купить</button>
-          </div>
-       {% elif post.group == "pc" %}
-        <div class=" Portfolio-box printdesign" style="height: auto"> <!-- Компьютеры -->
-          <a href="img/Portfolio-pic1.jpg"><img src="{{ post.img.url }}" alt=""></a>
-          <h3>{{ post.name }}</h3>
-          <p>Цена: {{ post.price }} ₽</p>
-           <button class="btn btn-success">Купить</button>
+    {% if user.is_authenticated %}
+        <div style="position: absolute; right: 50%; transform: translateX(50%); margin-top: 30px;">
+            <button onclick="window.location.href = {% url 'reg' %}" type="submit" class="btn btn-outline-info">
+                Профиль
+            </button>
+            <button onclick="window.location.href = {% url 'exit' %}" type="submit" class="btn btn-outline-info">Выход
+            </button>
         </div>
-       {% elif post.group == "notebook" %}
-          <div class="Portfolio-box webdesign" style="height: auto"> <!-- Ноутбуки -->
-            <a href="img/Portfolio-pic2.jpg"><img src="{{ post.img.url }}" alt=""></a>
-            <h3>{{ post.name }}</h3>
-            <p>Цена: {{ post.price }} ₽</p>
-             <button class="btn btn-success">Купить</button>
-          </div>
-       {% else %}
-          <div class=" Portfolio-box photography" style="height: auto"> <!-- Аксессуары -->
-            <a href="img/Portfolio-pic4.jpg"><img src="{{ post.img.url }}" alt=""></a>
-            <h3>{{ post.name }}</h3>
-            <p>Цена: {{ post.price }} ₽</p>
-            <button class="btn btn-success">Купить</button>
-          </div>
-        {% endif %}
-      {% endif %}
-    {% endfor %}
-  </div>
-</section>
+    {% else %}
+        <div style="position: absolute; right: 50%; transform: translateX(50%); margin-top: 30px;">
+            <button onclick="window.location.href = {% url 'reg' %}" type="submit" class="btn btn-outline-info">
+                Регистрация
+            </button>
+            <button onclick="window.location.href = {% url 'login' %}" type="submit" class="btn btn-outline-info">Вход
+            </button>
+        </div>
+    {% endif %}
+    <section class="main-section paddind" id="Portfolio">
+    <!--main-section-start-->
+
+        <!-- <a class="btn btn-outline-secondary" style="position: absolute; float: right; margin: 0;">Регистрация</a> -->
+        <!-- <a class="btn btn-outline-secondary" style="position: absolute; float: right; margin: 0;">Вход</a> -->
+        <h2>Магазин</h2>
+        <h6>У нас большой асортимент товаров.</h6>
+        <div class="portfolioFilter">
+            <ul class="Portfolio-nav wow fadeIn delay-02s">
+                <li><a href="#" data-filter="*" class="current">Все</a></li>
+                <li><a href="#" data-filter=".suhie">Сухие смеси и грунтовки</a></li>
+                <li><a href="#" data-filter=".listovie">Листовые материалы</a></li>
+                <li><a href="#" data-filter=".oblicov">Облицовочные материалы</a></li>
+                <li><a href="#" data-filter=".izol">Изоляционные материалы</a></li>
+            </ul>
+        </div>
+        </div>
+        <script>
+            // Example POST method implementation:
+            async function postData(url = '', data = {}) {
+                // Default options are marked with *
+                const response = await fetch(url, {
+                    method: 'POST', // *GET, POST, PUT, DELETE, etc.
+                    mode: 'cors', // no-cors, *cors, same-origin
+                    cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+                    credentials: 'same-origin', // include, *same-origin, omit
+                    headers: {
+                        'Content-Type': 'application/json'
+                        // 'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    redirect: 'follow', // manual, *follow, error
+                    referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+                    // body: JSON.stringify(data) // body data type must match "Content-Type" header
+                });
+                return response.json(); // parses JSON response into native JavaScript objects
+            }
+
+            {#postData('{% url 'add_to_cart' post.pk %}')#}
+            {#    .then(data => {#}
+            {#        console.log(data); // JSON data parsed by `response.json()` call#}
+            {#    });#}
+
+            function addItem(id) {
+                postData(`/add_to_cart/${id}`)
+                .then(data => {
+                    if (!data.success) {
+                        window.location.href = data.url;
+                    }
+                    console.log(data); // JSON data parsed by `response.json()` call
+                });
+            }
+        </script>
+        <div class="portfolioContainer wow fadeInUp delay-04s">
+            {% for post in pr %}
+                {% if post.availability %}
+                    {% if post.group == "mobile" %}
+                        <div class=" Portfolio-box suhie" style="height: auto"> <!-- Сухие смеси -->
+                            <a href="img/Portfolio-pic3.jpg"><img src="{{ post.img.url }}" alt=""></a>
+                            <h3>{{ post.name }}</h3>
+                            <p>Цена: {{ post.price }} ₽</p>
+                            <button class="btn btn-success" onclick="addItem({{ post.pk }})">Купить</button>
+                        </div>
+                    {% elif post.group == "pc" %}
+                        <div class=" Portfolio-box listovie" style="height: auto"> <!--Листовые-->
+                            <a href="img/Portfolio-pic1.jpg"><img src="{{ post.img.url }}" alt=""></a>
+                            <h3>{{ post.name }}</h3>
+                            <p>Цена: {{ post.price }} ₽</p>
+                            <button class="btn btn-success" onclick="addItem({{ post.pk }})">Купить</button>
+                        </div>
+                    {% elif post.group == "notebook" %}
+                        <div class="Portfolio-box oblicov" style="height: auto"> <!-- Облицовочные -->
+                            <a href="img/Portfolio-pic2.jpg"><img src="{{ post.img.url }}" alt=""></a>
+                            <h3>{{ post.name }}</h3>
+                            <p>Цена: {{ post.price }} ₽</p>
+                            <button class="btn btn-success" onclick="addItem({{ post.pk }})">Купить</button>
+                        </div>
+                    {% else %}
+                        <div class=" Portfolio-box izol" style="height: auto"> <!-- Изоляционные -->
+                            <a href="img/Portfolio-pic4.jpg"><img src="{{ post.img.url }}" alt=""></a>
+                            <h3>{{ post.name }}</h3>
+                            <p>Цена: {{ post.price }} ₽</p>
+                            <div class="add-to-card-btn"></div>
+                            <button class="btn btn-success" onclick="addItem({{ post.pk }})">Купить</button>
+                        </div>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        </div>
+    </section>
 {% endblock content %}

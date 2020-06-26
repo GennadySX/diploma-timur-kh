@@ -12,8 +12,10 @@
         </div>
     {% else %}
         <div style="position: absolute; right: 50%; transform: translateX(50%); margin-top: 30px;">
-            <a href="window.location.href = {% url 'reg' %}" type="submit" class="btn btn-light">Регистрация</a>
-            <a href="window.location.href = {% url 'login' %}" type="submit" class="btn btn-light">Вход</a>
+            <button onclick="window.location.href = {% url 'reg' %}" type="submit" class="btn btn-light">Регистрация
+            </button>
+            <button onclick="window.location.href = {% url 'login' %}" type="submit" class="btn btn-outline-info">Вход
+            </button>
         </div>
     {% endif %}
     <section class="main-section paddind" id="Portfolio" style="
@@ -47,6 +49,9 @@
                                         <th scope="col" class="border-0 bg-light">
                                             <div class="py-2 text-uppercase">Цена</div>
                                         </th>
+                                        <th scope="col" class="border-0 bg-light">
+                                            <div class="py-2 text-uppercase">Количество</div>
+                                        </th>
 
                                         <th scope="col" class="border-0 bg-light">
                                             <div class="py-2 text-uppercase">Удалить</div>
@@ -54,24 +59,39 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    {% for post in pr %}
-                                        {% if post.availability %}
+                                    {% for cart_entry in cart.cartentry_set.all %}
+                                        {% if cart_entry.product.availability %}
                                             <tr>
                                                 <th scope="row" class="border-0">
                                                     <div class="p-2">
-                                                        <img src="{{ post.img.url }}"
+                                                        <img src="{{ cart_entry.product.img.url }}"
                                                              alt="" width="70" class="img-fluid rounded shadow-sm">
                                                         <div class="ml-3 d-inline-block align-middle">
                                                             <h5 class="mb-0"><a href="#"
-                                                                                class="text-dark d-inline-block align-middle">{{ post.name }}</a>
+                                                                                class="text-dark d-inline-block align-middle">{{ cart_entry.product.name }}</a>
                                                             </h5><span
-                                                                class="text-muted font-weight-normal font-italic d-block">Категория: {{ post.group }}</span>
+                                                                class="text-muted font-weight-normal font-italic d-block">Категория: {{ cart_entry.product.group }}</span>
                                                         </div>
                                                     </div>
                                                 </th>
-                                                <td class="border-0 align-middle"><strong>{{ post.price }} ₽</strong></td>
-                                                <td class="border-0 align-middle"><a href="#" class="text-dark"><i
-                                                        class="fa fa-trash"></i></a></td>
+                                                <td class="border-0 align-middle"><strong>{{ cart_entry.product.price }} ₽</strong>
+                                                <td class="border-0 align-middle"><strong>{{ cart_entry.count }}</strong>
+                                                </td>
+                                                <form id="delete_form_{{ cart_entry.product.pk }}" method="post"
+                                                      action="{% url 'delete_from_cart' cart_entry.product.pk %}">
+                                                    {% csrf_token %}
+                                                    <script>
+                                                        function perform_delete_{{ cart_entry.product.pk }}() {
+                                                            document.forms.delete_form_{{ cart_entry.product.pk }}.submit()
+                                                        }
+                                                    </script>
+                                                    <td class="border-0 align-middle">
+                                                        <a href="#" onclick="perform_delete_{{ cart_entry.product.pk }}()"
+                                                           class="text-dark">
+                                                            <i class="fa fa-trash"></i>
+                                                        </a>
+                                                    </td>
+                                                </form>
                                             </tr>
                                         {% endif %}
                                     {% endfor %}
@@ -82,68 +102,89 @@
                         </div>
                     </div>
 
-                    <div class="row py-5 p-4 bg-white rounded shadow-sm">
-                        <div class="col-lg-6">
-                            <div class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold">Данные
-                                заказчика
+                    <form method="post" action="{% url 'pay' cart.pk %}">
+                        {% csrf_token %}
+                        <div class="row py-5 p-4 bg-white rounded shadow-sm">
+                            <div class="col-lg-6">
+                                <div class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold">Данные
+                                    заказчика
+                                </div>
+                                <div class="p-4">
+                                    <form>
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" id="exampleInputEmail1"
+                                                   aria-describedby="emailHelp" placeholder="Введите ФИО"
+                                                   name="fullName">
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" id="exampleInputPassword1"
+                                                   placeholder="Ваш номер" name="number">
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" id="exampleInputPassword1"
+                                                   placeholder="Ваш адресс" name="address">
+                                        </div>
+                                        <div class="form-group">
+                                            <select type="text" class="form-control" id="exampleInputPassword1"
+                                                    name="pay">
+                                                <option value="0" disabled selected>Выберите способ оплаты</option>
+                                                <option value="0">Налиными</option>
+                                                <option value="1">Онлайн картой</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <select type="text" class="form-control" id="deliveryInput"
+                                                    name="delivery">
+                                                <option value="0" disabled selected>Выберите способ доставки</option>
+                                                <option value="0">Самовывоз</option>
+                                                <option value="250">Доставка (₽250.00)</option>
+                                            </select>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
-                            <div class="p-4">
-                                <form>
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" id="exampleInputEmail1"
-                                               aria-describedby="emailHelp" placeholder="Введите ФИО">
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" id="exampleInputPassword1"
-                                               placeholder="Ваш номер">
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" id="exampleInputPassword1"
-                                               placeholder="Ваш адресс">
-                                    </div>
-                                    <div class="form-group">
-                                        <select type="text" class="form-control" id="exampleInputPassword1"
-                                                placeholder="Ваш адресс">
-                                            <option value="0" disabled selected>Выберите способ оплаты</option>
-                                            <option value="cash">Налиными</option>
-                                            <option value="card">Онлайн картой</option>
-                                        </select>
-                                    </div>
-
-                                </form>
+                            <div class="col-lg-6">
+                                <div class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold">Итог заказа
+                                </div>
+                                <div class="p-4">
+                                    <p class="font-italic mb-4">Доставка и дополнительные расходы рассчитываются на
+                                        основе
+                                        значений, которые вы ввели.</p>
+                                    <ul class="list-unstyled mb-4">
+                                        <li class="d-flex justify-content-between py-3 border-bottom"><strong
+                                                class="text-muted">Сумма
+                                            товаров </strong><strong id="price">₽{{ price }}.00</strong></li>
+                                        <li class="d-flex justify-content-between py-3 border-bottom"
+                                            id="delivery-output"><strong
+                                                class="text-muted">Доставка</strong><strong>₽250.00</strong></li>
+                                        <li class="d-flex justify-content-between py-3 border-bottom"><strong
+                                                class="text-muted">Общая сумма</strong>
+                                            <h5 class="font-weight-bold" id="total">₽{{ price_total }}.00</h5>
+                                        </li>
+                                    </ul>
+                                    <button type="submit" href="#" class="btn btn-dark rounded-pill py-2 btn-block">
+                                        Оформить заказ
+                                    </button>
+                                </div>
                             </div>
-                            <div class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold">Инструкция для
-                                продавца
-                            </div>
-                            <div class="p-4">
-                                <p class="font-italic mb-4">Если у вас есть информация для продавца, вы можете оставить
-                                    их в поле ниже</p>
-                                <textarea name="" cols="30" rows="2" class="form-control"></textarea>
-                            </div>
+                            <script>
+                                const deliveryInput = $('#deliveryInput');
+                                const deliveryOutput = $('#delivery-output');
+                                deliveryInput.on('change', e => {
+                                    const total = $('#total')[0];
+                                    const price = $('#price')[0];
+                                    const priceValue = Number(price.innerText.substring(1));
+                                    if (Number(deliveryInput.val()) === 250) {
+                                        deliveryOutput.removeClass('hidden');
+                                        total.innerText = `₽${priceValue + 250}.00`;
+                                    } else {
+                                        deliveryOutput.addClass('hidden');
+                                        total.innerText = `₽${priceValue}.00`;
+}
+                                });
+                            </script>
                         </div>
-                        <div class="col-lg-6">
-                            <div class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold">Итог заказа
-                            </div>
-                            <div class="p-4">
-                                <p class="font-italic mb-4">Доставка и дополнительные расходы рассчитываются на основе
-                                    значений, которые вы ввели.</p>
-                                <ul class="list-unstyled mb-4">
-                                    <li class="d-flex justify-content-between py-3 border-bottom"><strong
-                                            class="text-muted">Сумма товаров </strong><strong>₽3900.00</strong></li>
-                                    <li class="d-flex justify-content-between py-3 border-bottom"><strong
-                                            class="text-muted">Доставка</strong><strong>₽250.00</strong></li>
-                                    <li class="d-flex justify-content-between py-3 border-bottom"><strong
-                                            class="text-muted">НДС</strong><strong>₽100.00</strong></li>
-                                    <li class="d-flex justify-content-between py-3 border-bottom"><strong
-                                            class="text-muted">Общая сумма</strong>
-                                        <h5 class="font-weight-bold">₽4350.00</h5>
-                                    </li>
-                                </ul>
-                                <a href="#" class="btn btn-dark rounded-pill py-2 btn-block">Оформить заказ</a>
-                            </div>
-                        </div>
-                    </div>
-
+                    </form>
                 </div>
             </div>
         </div>
